@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-function unittest_request(Task & $oTask, & $oResult) {
+function unittest_request(Task $oTask, $oResult) {
 	// Only answer to /yarapi/testrunner
   if ($oTask->getPathCount() != 2 || $oTask->getPathArg(0) != 'yarapi' || $oTask->getPathArg(1) != 'testrunner') return;
 	
@@ -14,7 +14,7 @@ function unittest_request(Task & $oTask, & $oResult) {
 	$oTask->setHandled();
 }
 
-function unittest_after_load(Module & $oModule) {
+function unittest_after_load(Module $oModule) {
   if (!$oModule) return;
 	
 	static $bLibraryLoaded = false;	
@@ -48,7 +48,7 @@ function _unittest_get_or_instantiate_suite() {
   return $oYarapiTestSuite;
 }
 
-function _unittest_scan_module_directory(Module & $oModule) {
+function _unittest_scan_module_directory(Module $oModule) {
 	// We use this configuration to exclude unwanted directories
   $aModulesConfiguration = yarapi_load_config('modules');
     

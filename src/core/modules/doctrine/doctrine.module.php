@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // Include the Doctrine ORM framework - we can be sure that this module will only be included
 // once so we need only require instead of require_once.
@@ -25,7 +25,7 @@ function doctrine_manager() {
 	return $oManager;
 }
 
-function doctrine_after_load(& $oModule) {
+function doctrine_after_load($oModule) {
 	if (!$oModule) return;
 	
 	// Load mechanism does nothing, when no models are present.

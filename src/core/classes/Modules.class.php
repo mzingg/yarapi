@@ -1,18 +1,18 @@
-<?php
+﻿<?php
 class Modules extends PersistentState {
 	
 	public static function invokeHook() {
-    $oModules = Modules::getInstance();
+		$oModules = Modules::getInstance();
 		
-    $aArguments = func_get_args();
+		$aArguments = func_get_args();
 		return call_user_func_array(array($oModules, '_invokeHook'), $aArguments);		
 	}
 	
 	public static function invokeHookModular() {
-    $oModules = Modules::getInstance();
-    
-    $aArguments = func_get_args();
-    return call_user_func_array(array($oModules, '_invokeHookModular'), $aArguments);   
+		$oModules = Modules::getInstance();
+		
+		$aArguments = func_get_args();
+		return call_user_func_array(array($oModules, '_invokeHookModular'), $aArguments);   
 	}
 		
 	public static function findModuleByName($sModuleName) {
@@ -178,7 +178,7 @@ class Modules extends PersistentState {
 	
   private function _invokeHook() {
     $aArguments = func_get_args();
-    $aModularResults = call_user_func_array(array($this, 'invokeHookModular'), $aArguments);
+    $aModularResults = call_user_func_array(array($this, '_invokeHookModular'), $aArguments);
     
     $aResults = array();
     foreach ($aModularResults as $sModuleName => $result) {

@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-function rest_request(& $oTask, & $oResult) {
+function rest_request($oTask, $oResult) {
 	
 	// stores the relations artifact -> modules
 	$aArtifactsToModule = array();

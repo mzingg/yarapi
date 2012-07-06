@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * undocumented class
@@ -135,27 +135,27 @@ class Module {
 		$aArguments = func_get_args();
 		// First argument is the name of the hook, rest parameters to the hook
 		$sHookName = array_shift($aArguments);
-		
+
 		// Check if this module provides this hook (and lazy load at the same time)	
-		if (!$this->providesHook($sHookName)) return null;
+		if (!$this->providesHook($sHookName)) return null;			
 		
 		// Prepare for calling the hook function (we are sure it exists here)
 		$sFunctionName = $this->getHookFunctionName($sHookName);		
 		
 		// Call the hook aspect hooks (only if we are not calling one of them)
-		$sHookAspectNames = array('hook_before', 'hook_after');
-		if (!in_array($sHookName, $sHookAspectNames)) {
+		$aHookAspectNames = array('hook_before', 'hook_after');
+		if (!in_array($sHookName, $aHookAspectNames)) {
 			// Now invoke the hook_before hook to do things before the original hook
-			Modules::invokeHook('hook_before', $sHookName, $this->getName(), $aArguments);
+			Modules::invokeHook($aHookAspectNames[0], $sHookName, $this->getName(), $aArguments);
 		}
 		
 		// Call the actual hook function with the provided parameters
-		$result =  call_user_func_array($sFunctionName, $aArguments);
+		$result = call_user_func_array($sFunctionName, $aArguments);
 		
 		// Call the hook aspect hooks (only if we are not calling one of them)
-		if (!in_array($sHookName, $sHookAspectNames)) {
+		if (!in_array($sHookName, $aHookAspectNames)) {
 			// Allow other modules to do things after the original hook
-			Modules::invokeHook('hook_after', $sHookName, $this->getName(), $aArguments, $result);
+			Modules::invokeHook($aHookAspectNames[1], $sHookName, $this->getName(), $aArguments, $result);
 		}
 		
 		return $result;

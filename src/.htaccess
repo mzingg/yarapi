@@ -1,4 +1,4 @@
-RewriteEngine On
+﻿RewriteEngine On
 
 ########## Begin - Rewrite rules to block out some common exploits
 ## If you experience problems on your site block out the operations listed below

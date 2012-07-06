@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // Include the PEAR Log package 
 require('Log-1.12.7/Log.php');

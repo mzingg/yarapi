@@ -1,7 +1,9 @@
-<?php
+﻿<?php
 function yarapi_get_task() {
 	$sRequestMethod = strtolower($_SERVER['REQUEST_METHOD']);
-	$sRequestPath = $_SERVER['REQUEST_URI'];
+	$sApplicationContext = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+	$sRequestPath = str_replace($sApplicationContext, '', $_SERVER['REQUEST_URI']);
+
 	
 	$nQuestionMarkPos = strpos($sRequestPath, '?'); 
 	if ($nQuestionMarkPos !== false) {

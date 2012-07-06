@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Environment setup for the YARAPI core. Defines important global
  * variables, include paths and class autoloading.

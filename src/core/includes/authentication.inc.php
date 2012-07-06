@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function yarapi_get_user() {
 	$oUser = new stdClass();

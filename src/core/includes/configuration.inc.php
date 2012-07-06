@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function yarapi_load_config($sConfigName) {
   

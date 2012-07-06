@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class DoctrineModule extends Module {
 	
 	public function __construct(Module & $oModule) {
