@@ -1,0 +1,12 @@
+enabled: true
+version: 1.0
+compatible: 1.0
+
+description: Doctrine ORM framework
+
+provides:
+    
+precedes:
+
+dependencies:
+  command: 1.0

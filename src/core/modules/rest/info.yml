@@ -1,0 +1,11 @@
+enabled: true
+version: 1.0
+compatible: 1.0
+
+description: REST functionality
+
+provides:
+    
+precedes:
+
+dependencies:

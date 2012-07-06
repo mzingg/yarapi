@@ -1,0 +1,7 @@
+enabled: true
+version: 1.0
+compatible: 1.0
+
+description: Provides a command environment for a YARAPI installation
+
+dependencies:

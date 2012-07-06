@@ -1,0 +1,11 @@
+enabled: true
+version: 1.0
+compatible: 1.0
+
+description: Unit Test capabilities
+
+provides:
+    
+precedes:
+
+dependencies:

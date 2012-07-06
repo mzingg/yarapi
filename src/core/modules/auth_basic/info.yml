@@ -1,0 +1,7 @@
+enabled: true
+version: 1.0
+compatible: 1.0
+
+description: Enables yarapi for basic authentication
+
+dependencies:

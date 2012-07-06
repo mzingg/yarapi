@@ -1,0 +1,70 @@
+Index: tests/singleton.phpt
+===================================================================
+--- tests/singleton.phpt	(revision 44)
++++ tests/singleton.phpt	(working copy)
+@@ -8,7 +8,7 @@
+ $console1 = &Log::singleton('console');
+ $console2 = &Log::singleton('console');
+ 
+-if (is_a($console1, 'Log_console') && is_a($console2, 'Log_console'))
++if ($console1 instanceof Log_console && $console2 instanceof Log_console)
+ {
+ 	echo "Two Log_console objects.\n";
+ }
+Index: tests/factory.phpt
+===================================================================
+--- tests/factory.phpt	(revision 44)
++++ tests/factory.phpt	(working copy)
+@@ -8,7 +8,7 @@
+ $console1 = &Log::factory('console');
+ $console2 = &Log::factory('console');
+ 
+-if (is_a($console1, 'Log_console') && is_a($console2, 'Log_console'))
++if ($console1 instanceof Log_console && $console2 instanceof Log_console)
+ {
+ 	echo "Two Log_console objects.\n";
+ }
+Index: Log/composite.php
+===================================================================
+--- Log/composite.php	(revision 44)
++++ Log/composite.php	(working copy)
+@@ -199,7 +199,7 @@
+     function addChild(&$child)
+     {
+         /* Make sure this is a Log instance. */
+-        if (!is_a($child, 'Log')) {
++        if (!($child instanceof Log)) {
+             return false;
+         }
+ 
+@@ -219,7 +219,7 @@
+      */
+     function removeChild($child)
+     {
+-        if (!is_a($child, 'Log') || !isset($this->_children[$child->_id])) {
++        if (!($child instanceof Log) || !isset($this->_children[$child->_id])) {
+             return false;
+         }
+ 
+Index: Log.php
+===================================================================
+--- Log.php	(revision 44)
++++ Log.php	(working copy)
+@@ -769,7 +769,7 @@
+      */
+     function attach(&$observer)
+     {
+-        if (!is_a($observer, 'Log_observer')) {
++        if (!($observer instanceof Log_observer)) {
+             return false;
+         }
+ 
+@@ -791,7 +791,7 @@
+      */
+     function detach($observer)
+     {
+-        if (!is_a($observer, 'Log_observer') ||
++        if (!($observer instanceof Log_observer) ||
+             !isset($this->_listeners[$observer->_id])) {
+             return false;
+         }
