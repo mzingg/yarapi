@@ -11,7 +11,7 @@
 
 // YAML Library: Hard coded lib requirement - needed in InstallationState
 // The path is relative to the index.php because thats the executed script.
-require('core/lib/spyc-0.4.5/spyc.php');
+require('core/lib/spyc-0.5/spyc.php');
 
 // Hard coded class requirement - because the class is needed itself in the __autoload function
 // The path is relative to the index.php because thats the executed script.

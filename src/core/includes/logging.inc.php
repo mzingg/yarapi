@@ -1,7 +1,7 @@
 <?php
 
 // Include the PEAR Log package 
-require('Log-1.11.5/Log.php');
+require('Log-1.12.7/Log.php');
 
 // Replace the standard error_handler with our own
 set_error_handler('__yarapi_error_handler');
