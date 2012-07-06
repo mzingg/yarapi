@@ -23,7 +23,7 @@ $sRootPath = realpath(dirname(__FILE__) . '/../..');
 
 // Environment definition - change through the Apache environment
 // variable YARAPI_ENV (dev, stage, prod). Standard is 'dev'.
-$sEnvironment = ($_SERVER['YARAPI_ENV'] ? $_SERVER['YARAPI_ENV'] : 'dev');
+$sEnvironment = (array_key_exists('YARAPI_ENV', $_SERVER) ? $_SERVER['YARAPI_ENV'] : 'dev');
 
 // Create the state object for this installation
 $oInstallationState = InstallationState::create($sRootPath, $sEnvironment);
