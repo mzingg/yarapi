@@ -41,6 +41,7 @@ function yarapi_handle_request() {
 	try {
 	   Modules::invokeHook('request', $oTask, $oResult);
 	} catch (Exception $e) {
+		yarapi_log($e->getMessage(), PEAR_LOG_ERR);
 		header($_SERVER["SERVER_PROTOCOL"]." 500 Exception: " . $e->getMessage());
 		return;
 	}
