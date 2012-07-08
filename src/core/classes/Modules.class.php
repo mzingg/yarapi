@@ -87,7 +87,7 @@ class Modules extends PersistentState {
       if ($sSubEntry == '.' || $sSubEntry == '..') continue;
       
       // if the directory is one of the excluded entries do nothing
-      if (in_array($sSubEntry, $aModulesConfiguration['ignored_directories'])) continue;
+      if (array_key_exists('ignored_directories', $aModulesConfiguration) && in_array($sSubEntry, $aModulesConfiguration['ignored_directories'])) continue;
 
       $sAbsolutePath = $sModulesDir . '/' . $sSubEntry;
       if (!is_dir($sAbsolutePath)) continue;
@@ -103,7 +103,7 @@ class Modules extends PersistentState {
 		  if ($sSubEntry == '.' || $sSubEntry == '..') continue;
 		  
 		  // if the directory is one of the excluded entries do nothing
-		  if (in_array($sSubEntry, $aModulesConfiguration['ignored_directories'])) continue;
+		  if (array_key_exists('ignored_directories', $aModulesConfiguration) && in_array($sSubEntry, $aModulesConfiguration['ignored_directories'])) continue;
 
 			$sAbsolutePath = $sModulesDir . '/' . $sSubEntry;
 			if (!is_dir($sAbsolutePath)) continue;

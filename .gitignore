@@ -1,2 +1,5 @@
 var
 sites
+.settings
+/.project
+/.buildpath

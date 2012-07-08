@@ -1,96 +1,83 @@
 ﻿<?php
 class DoctrineModule extends Module {
-	
+
+	private $oEntityManager;
+
 	public function __construct(Module & $oModule) {
 		if (is_null($oModule))
-		  throw new Exception('Module passed to the DoctrineModule cannot be null');
-		  
-		if (!function_exists('doctrine_manager'))
-		  throw new Exception(
-		    'DoctrineModule depends on the function doctrine_manager() in the doctrine Module.
-		    So DoctrineModule classes cannot be instantiated before to module loading process has completed'
-		  );
-		  
-	  // Ensure that all configured connections are loaded into the manager as well
-	  // by calling our doctrine_manager() function.
-	  $oManager = doctrine_manager();
+			throw new Exception('Module passed to the DoctrineModule cannot be null');
 
-	  // Call the parent constructor to initialize module correctly
+		// Call the parent constructor to initialize module correctly
 		parent::__construct($oModule->getName(), $oModule->getPath());
-	}
-	
-	function loadModels() {
-	  // We have no schema.yml so we can quit early 
-	  if (!$this->isDoctrineEnabled()) return;
-	  
-	  // When the model is not genarated (yet) we can also quit here.
-	  if (!$this->schemaExists()) return;
-	
-	  // Load models - we need conservative strategy because otherwise we get problems
-	  // during bootstrap.
-	  Doctrine::loadModels($this->getModelsPath(), Doctrine::MODEL_LOADING_CONSERVATIVE);  
+
+		if (!$this->isDoctrineEnabled()) return;
+
+		// TODO: Implement static EntityManager cache
+		$oInstallationState = InstallationState::getInstance();
+		$oConfig = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array($this->getModelsPath()), $oInstallationState->getEnvironment() == 'dev');
+		$this->oEntityManager = \Doctrine\ORM\EntityManager::create($this->getDatabaseConfiguration(), $oConfig);
 	}
 
 	public static function dropDatabases() {
-	  Doctrine::dropDatabases();
-	  return true;
-	}
-	
-	public static function createDatabases() {
-	  Doctrine::createDatabases();
-	  return true;  
-	}
-	
-	function generateModelsFromYaml() {
-		if (!$this->isDoctrineEnabled())
-		  throw new Exception('This module [%s] is not enabled for doctrine model generation (schema.yml file is missing).');
-		  
-		$aOptions = array(
-		  'generateTableClasses' => true
-		);
-	  Doctrine::generateModelsFromYaml($this->getSchemaPath(), $this->getModelsPath(), $aOptions);
-	  return true;  
-	}
-	
-	function createTablesFromModels() {
-		if (!$this->schemaExists())
-		  throw new Exception('Generated model classes do not exist. Call \'generateModelsFromYaml\' first.');
-		  
-	  Doctrine::createTablesFromModels($this->getModelsPath());
-	  return true;
-	}
-	
-	function readFixtures() {
-    if (!$this->isDoctrineEnabled())
-      throw new Exception('This module [%s] is not enabled for doctrine model generation (schema.yml file is missing).');
-      
-		Doctrine_Core::loadData($this->getFixturesPath());		
-	}
-		
-	public function getSchemaPath() {
-		return $this->getPath() . '/schema.yml';
-	}
-	
-  public function getModelsPath() {
-    return $this->getPath() . '/models';
-  }
-  
-  public function getFixturesPath() {
-    return $this->getPath() . '/fixtures';
-  }
-  
-  public function getGeneratedModelsPath() {
-    return $this->getPath() . '/models/generated';
-  }
-  
-  public function schemaExists() {
-		return is_dir($this->getModelsPath()) && is_dir($this->getGeneratedModelsPath());
-	}
-	
-	public function isDoctrineEnabled() {
-		return is_file($this->getSchemaPath()) && is_readable($this->getSchemaPath());  
+		Doctrine::dropDatabases();
+		return true;
 	}
 
-	
-	
+	public static function createDatabases() {
+		Doctrine::createDatabases();
+		return true;
+	}
+
+	function createTablesFromModels() {
+		$oSchemaTool = new \Doctrine\ORM\Tools\SchemaTool($this->oEntityManager);
+		$oMetaData = $this->oEntityManager->getMetadataFactory()->getAllMetadata();
+
+		$oSchemaTool->createSchema($oMetaData);
+		return true;
+	}
+
+	function readFixtures() {
+		if (!$this->isDoctrineEnabled())
+			throw new Exception('This module [%s] is not enabled for doctrine model generation (schema.yml file is missing).');
+
+		Doctrine_Core::loadData($this->getFixturesPath());
+	}
+
+	function getDatabaseConfiguration() {
+		return array(
+				'driver'   => 'pdo_mysql',
+				'user'     => 'root',
+				'password' => '',
+				'host'		 => 'localhost',
+				'dbname'   => 'wow_ah_analyzer',
+				'charset'  => 'UTF-8'
+		);
+	}
+
+	public function getEntityManager() {
+		return $this->oEntityManager;
+	}
+
+	public function getModelsPath() {
+		return $this->getPath() . '/classes';
+	}
+
+	public function getGeneratedModelsPath() {
+		return $this->getModelsPath() . '/generated';
+	}
+
+	public function getFixturesPath() {
+		return $this->getPath() . '/fixtures';
+	}
+
+	public function schemaExists() {
+		return is_dir($this->getModelsPath()) && is_dir($this->getGeneratedModelsPath());
+	}
+
+	public function isDoctrineEnabled() {
+		return is_dir($this->getModelsPath());
+	}
+
+
+
 }

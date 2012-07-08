@@ -26,7 +26,7 @@ function yarapi_load_config($sConfigName) {
 		}
 	}
 	
-	yarapi_log(sprintf('Configuration [%s] not found.', $sConfigName), PEAR_LOG_ERR);
-	return false;
+	//yarapi_log(sprintf('Configuration [%s] does not exist. Returning empty array.', $sConfigName));
+	return array();
 }
 ?>

@@ -1,14 +1,13 @@
-﻿<?php
+<?php
 
 // Include the Doctrine ORM framework - we can be sure that this module will only be included
 // once so we need only require instead of require_once.
-require('doctrine_1.2.1/Doctrine.php');
+require('DoctrineORM-2.2.2/Doctrine/ORM/Tools/Setup.php');
 
-// Register the Doctrine autoloaders. The modelsAutoload we need because we use
-// the Doctrine::MODEL_LOADING_CONSERVATIVE strategy (lazy loading).
-spl_autoload_register(array('Doctrine', 'autoload'));
-spl_autoload_register(array('Doctrine', 'modelsAutoload'));
+// Register the Doctrine autoloaders.
+Doctrine\ORM\Tools\Setup::registerAutoloadDirectory('DoctrineORM-2.2.2');
 
+/*
 function doctrine_manager() {
 	static $oManager = null;
 	
@@ -24,6 +23,7 @@ function doctrine_manager() {
 	
 	return $oManager;
 }
+*/
 
 function doctrine_after_load($oModule) {
 	if (!$oModule) return;
@@ -31,26 +31,14 @@ function doctrine_after_load($oModule) {
 	// Load mechanism does nothing, when no models are present.
   // Use the command infrastructure to generate models and tables from the schema.yml
 	$oDoctrineModule = new DoctrineModule($oModule);
-	$oDoctrineModule->loadModels();
+	//$oDoctrineModule->loadModels();
 }
 
 function doctrine_command($sCommand) {
-  if (!in_array($sCommand, array('dropDatabases', 'createDatabases', 'generateModelsFromYaml', 'createTablesFromModels', 'loadFixtures'))) return null;
-  
+  if (!in_array($sCommand, array('createTablesFromModels', 'loadFixtures'))) return null;
   
   $oResult = null;
   switch ($sCommand) {
-    case 'dropDatabases':
-      DoctrineModule::dropDatabases();
-      $oResult = 'dropDatabases successfully called';
-      break;
-    case 'createDatabases':
-      DoctrineModule::createDatabases();
-      $oResult = 'createDatabases successfully called';
-      break;
-    case 'generateModelsFromYaml':
-      $oResult = _doctrine_call_generateModelsFromYaml();
-      break;
     case 'createTablesFromModels':
       $oResult =_doctrine_call_createTablesFromModels();
       break;
@@ -62,25 +50,6 @@ function doctrine_command($sCommand) {
   return $oResult;
 }
 
-function _doctrine_call_generateModelsFromYaml() {
-	$aModules = Modules::findModulesByStatus('enabled');
-	$aSuccessfullModules = array();
-	foreach ($aModules as $sModuleName => $oModule) {
-	  $oDoctrineModule = new DoctrineModule($oModule);
-	  
-	  if (!$oDoctrineModule->isDoctrineEnabled())
-	    continue;
-
-	  $aSuccessfullModules[] = $sModuleName;
-	  $oDoctrineModule->generateModelsFromYaml();
-	}
-	
-	if (count($aSuccessfullModules) == 0)
-	  return 'No models generated';
-	  
-	return sprintf('Models for the following modules generated: %s.', implode(',', $aSuccessfullModules));
-}
-
 function _doctrine_call_createTablesFromModels() {
   $aModules = Modules::findModulesByStatus('enabled');
   $aSuccessfullModules = array();
@@ -90,8 +59,9 @@ function _doctrine_call_createTablesFromModels() {
     if (!$oDoctrineModule->isDoctrineEnabled())
       continue;
 
-    $aSuccessfullModules[] = $sModuleName;
-    $oDoctrineModule->createTablesFromModels();
+    if ($oDoctrineModule->createTablesFromModels()) {
+    	$aSuccessfullModules[] = $sModuleName;
+    }    
   }
   
   if (count($aSuccessfullModules) == 0)

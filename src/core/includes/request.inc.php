@@ -39,7 +39,7 @@ function yarapi_handle_request() {
 	
 	// First call the generic request hook
 	try {
-	   Modules::invokeHook('request', & $oTask, & $oResult);
+	   Modules::invokeHook('request', $oTask, $oResult);
 	} catch (Exception $e) {
 		header($_SERVER["SERVER_PROTOCOL"]." 500 Exception: " . $e->getMessage());
 		return;
