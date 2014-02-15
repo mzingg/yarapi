@@ -3,3 +3,6 @@ sites
 .settings
 /.project
 /.buildpath
+/.checkstyle
+
+/.pmd
