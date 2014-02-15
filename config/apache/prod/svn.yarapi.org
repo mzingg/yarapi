@@ -1,0 +1,49 @@
+<VirtualHost *:443>
+  ServerAdmin mzingg@gmx.net
+  ServerName svn.yarapi.org
+  ServerAlias svn.yarapi.biz
+  ServerAlias svn.yarapi.ch
+  ServerAlias svn.yarapi.com
+  ServerAlias svn.yarapi.net
+
+  # Subversion Zugriff nur über SSL
+  SSLEngine on
+  SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+  ErrorLog /srv/web/svn.yarapi.org/logs/error.log
+  LogLevel error
+
+  CustomLog /srv/web/svn.yarapi.org/logs/access.log combined
+  ServerSignature Off
+
+  DocumentRoot /srv/web/svn.yarapi.org/docroot
+
+  <Directory />
+    Options None
+    AllowOverride None
+    Order deny,allow
+    deny from all
+  </Directory>
+
+  <Location />
+    SSLRequireSSL
+
+    DAV svn 
+    SVNPath /srv/subversion/yarapi
+    SVNReposName "YARAPI Subversion Repository"
+
+    AuthType Basic
+    AuthName "YARAPI Subversion Repository"
+    AuthUserFile /srv/config/apache/prod/subversion_users
+
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+      Require valid-user
+    </LimitExcept> 
+
+    Options Indexes MultiViews
+    Order allow,deny
+    allow from all
+  </Location>
+
+</VirtualHost>

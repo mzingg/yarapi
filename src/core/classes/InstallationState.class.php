@@ -102,7 +102,6 @@ class InstallationState extends PersistentState {
     // First we try to create a directory that does not exist
     if (!file_exists($directoryPath)) {
       // Create a readable directory recursivly
-      if (!mkdir($directoryPath, 0644, true))
         throw new Exception(sprintf('Could not create mandatory directory %s (error in mkdir function).', $directoryPath));
     }
       

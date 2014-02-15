@@ -2,9 +2,14 @@
 function yarapi_get_task() {
 	$sRequestMethod = strtolower($_SERVER['REQUEST_METHOD']);
 	$sApplicationContext = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
-	$sRequestPath = str_replace($sApplicationContext, '', $_SERVER['REQUEST_URI']);
+	$sRequestPath = $_SERVER['REQUEST_URI'];
+	// If the request path starts with the context path we need to remove the context
+	// path for further processing. Note that the comparison to 0 is intended as the context
+	// path has to be at the beginning of the string.
+	if (strpos($sRequestPath, $sApplicationContext) == 0) {
+		$sRequestPath = substr($sRequestPath, strlen($sApplicationContext));
+	}
 
-	
 	$nQuestionMarkPos = strpos($sRequestPath, '?'); 
 	if ($nQuestionMarkPos !== false) {
 		$sRequestPath = substr($sRequestPath, 0, $nQuestionMarkPos);

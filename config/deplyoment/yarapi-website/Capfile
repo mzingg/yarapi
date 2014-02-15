@@ -1,0 +1,23 @@
+load 'deploy' if respond_to?(:namespace) # cap2 differentiator
+
+require 'rubygems'
+require 'railsless-deploy'
+
+default_run_options[:pty] = true
+set :use_sudo, false
+set :scm, :subversion
+
+set :application, "yarapi"
+set :repository,  "https://svn.yarapi.org/website/trunk"
+
+set :user, "root"
+ssh_options[:keys] = %w(/mnt/hgfs/workspaces/keys/markus_neu.privatekey)
+
+set :deploy_to, "/srv/web/www.yarapi.org/deploy"
+
+role :web, "t1705.greatnet.de", :primary => true
+
+task :after_update do  
+  run "chown -R www-data:www-data #{deploy_to}"
+  run "ln -s /srv/web/www.yarapi.org/data #{deploy_to}/current/data"
+end
