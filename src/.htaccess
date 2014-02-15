@@ -1,3 +1,4 @@
+Options +FollowSymlinks
 RewriteEngine On
 
 ########## Begin - Rewrite rules to block out some common exploits

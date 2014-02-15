@@ -1,72 +1,72 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * This file is part of the Symfony package. (c) Fabien Potencier <fabien@symfony.com> For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
  */
-
 namespace Symfony\Component\Console\Formatter;
 
 /**
  * Formatter style interface for defining styles.
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
- *
- * @api
+ *        
+ *         @api
  */
-interface OutputFormatterStyleInterface
-{
-    /**
-     * Sets style foreground color.
-     *
-     * @param   string  $color  color name
-     *
-     * @api
-     */
-    function setForeground($color = null);
+interface OutputFormatterStyleInterface {
 
-    /**
-     * Sets style background color.
-     *
-     * @param   string  $color  color name
-     *
-     * @api
-     */
-    function setBackground($color = null);
+   /**
+    * Sets style foreground color.
+    *
+    * @param string $color
+    *           color name
+    *           
+    *           @api
+    */
+   function setForeground($color = null);
 
-    /**
-     * Sets some specific style option.
-     *
-     * @param   string  $option     option name
-     *
-     * @api
-     */
-    function setOption($option);
+   /**
+    * Sets style background color.
+    *
+    * @param string $color
+    *           color name
+    *           
+    *           @api
+    */
+   function setBackground($color = null);
 
-    /**
-     * Unsets some specific style option.
-     *
-     * @param   string  $option     option name
-     */
-    function unsetOption($option);
+   /**
+    * Sets some specific style option.
+    *
+    * @param string $option
+    *           option name
+    *           
+    *           @api
+    */
+   function setOption($option);
 
-    /**
-     * Set multiple style options at once.
-     *
-     * @param   array   $options
-     */
-    function setOptions(array $options);
+   /**
+    * Unsets some specific style option.
+    *
+    * @param string $option
+    *           option name
+    */
+   function unsetOption($option);
 
-    /**
-     * Applies the style to a given text.
-     *
-     * @param string $text The text to style
-     *
-     * @return string
-     */
-    function apply($text);
+   /**
+    * Set multiple style options at once.
+    *
+    * @param array $options           
+    */
+   function setOptions(array $options);
+
+   /**
+    * Applies the style to a given text.
+    *
+    * @param string $text
+    *           The text to style
+    *           
+    * @return string
+    */
+   function apply($text);
+
 }

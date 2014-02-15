@@ -1,6 +1,6 @@
 ﻿<?php
 // Set up the include and autoload configuration and the environment
-require('core/includes/bootstrap.inc.php');
+require ('core/includes/bootstrap.inc.php');
 
 // define the global user
 global $YARAPI_USER;

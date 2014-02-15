@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Log.php';
 
 $console = &Log::singleton('console', '', 'TEST');

@@ -1,22 +1,7 @@
 <?php
 /*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
- * <http://www.doctrine-project.org>.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. This software consists of voluntary contributions made by many individuals and is licensed under the LGPL. For more information, see <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\Common\Annotations;
 
 use Doctrine\Common\Lexer;
@@ -30,111 +15,119 @@ use Doctrine\Common\Lexer;
  * @author Roman Borschel <roman@code-factory.org>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-final class DocLexer extends Lexer
-{
-    const T_NONE                = 1;
-    const T_IDENTIFIER          = 2;
-    const T_INTEGER             = 3;
-    const T_STRING              = 4;
-    const T_FLOAT               = 5;
+final class DocLexer extends Lexer {
 
-    const T_AT                  = 101;
-    const T_CLOSE_CURLY_BRACES  = 102;
-    const T_CLOSE_PARENTHESIS   = 103;
-    const T_COMMA               = 104;
-    const T_EQUALS              = 105;
-    const T_FALSE               = 106;
-    const T_NAMESPACE_SEPARATOR = 107;
-    const T_OPEN_CURLY_BRACES   = 108;
-    const T_OPEN_PARENTHESIS    = 109;
-    const T_TRUE                = 110;
-    const T_NULL                = 111;
-    const T_COLON               = 112;
+   const T_NONE = 1;
 
-    /**
-     * @inheritdoc
-     */
-    protected function getCatchablePatterns()
-    {
-        return array(
-            '[a-z_][a-z0-9_:]*',
-            '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
-            '"(?:[^"]|"")*"',
-        );
-    }
+   const T_IDENTIFIER = 2;
 
-    /**
-     * @inheritdoc
-     */
-    protected function getNonCatchablePatterns()
-    {
-        return array('\s+', '\*+', '(.)');
-    }
+   const T_INTEGER = 3;
 
-    /**
-     * @inheritdoc
-     */
-    protected function getType(&$value)
-    {
-        $type = self::T_NONE;
+   const T_STRING = 4;
 
-        // Checking numeric value
-        if (is_numeric($value)) {
-            return (strpos($value, '.') !== false || stripos($value, 'e') !== false)
-                ? self::T_FLOAT : self::T_INTEGER;
-        }
+   const T_FLOAT = 5;
 
-        if ($value[0] === '"') {
-            $value = str_replace('""', '"', substr($value, 1, strlen($value) - 2));
+   const T_AT = 101;
 
-            return self::T_STRING;
-        } else {
-            switch (strtolower($value)) {
-                case '@':
-                    return self::T_AT;
+   const T_CLOSE_CURLY_BRACES = 102;
 
-                case ',':
-                    return self::T_COMMA;
+   const T_CLOSE_PARENTHESIS = 103;
 
-                case '(':
-                    return self::T_OPEN_PARENTHESIS;
+   const T_COMMA = 104;
 
-                case ')':
-                    return self::T_CLOSE_PARENTHESIS;
+   const T_EQUALS = 105;
 
-                case '{':
-                    return self::T_OPEN_CURLY_BRACES;
+   const T_FALSE = 106;
 
-                case '}':
-                    return self::T_CLOSE_CURLY_BRACES;
+   const T_NAMESPACE_SEPARATOR = 107;
 
-                case '=':
-                    return self::T_EQUALS;
+   const T_OPEN_CURLY_BRACES = 108;
 
-                case '\\':
-                    return self::T_NAMESPACE_SEPARATOR;
+   const T_OPEN_PARENTHESIS = 109;
 
-                case 'true':
-                    return self::T_TRUE;
+   const T_TRUE = 110;
 
-                case 'false':
-                    return self::T_FALSE;
+   const T_NULL = 111;
 
-                case 'null':
-                    return self::T_NULL;
+   const T_COLON = 112;
 
-                case ':':
-                    return self::T_COLON;
+   /**
+    * @inheritdoc
+    */
+   protected function getCatchablePatterns() {
+      return array('[a-z_][a-z0-9_:]*', '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?', '"(?:[^"]|"")*"');
+   }
 
-                default:
-                    if (ctype_alpha($value[0]) || $value[0] === '_') {
-                        return self::T_IDENTIFIER;
-                    }
+   /**
+    * @inheritdoc
+    */
+   protected function getNonCatchablePatterns() {
+      return array('\s+', '\*+', '(.)');
+   }
 
-                    break;
-            }
-        }
+   /**
+    * @inheritdoc
+    */
+   protected function getType(&$value) {
+      $type = self::T_NONE;
+      
+      // Checking numeric value
+      if (is_numeric($value)) {
+         return (strpos($value, '.') !== false || stripos($value, 'e') !== false) ? self::T_FLOAT : self::T_INTEGER;
+      }
+      
+      if ($value[0] === '"') {
+         $value = str_replace('""', '"', substr($value, 1, strlen($value) - 2));
+         
+         return self::T_STRING;
+      } else {
+         switch (strtolower($value)) {
+            case '@' :
+               return self::T_AT;
+            
+            case ',' :
+               return self::T_COMMA;
+            
+            case '(' :
+               return self::T_OPEN_PARENTHESIS;
+            
+            case ')' :
+               return self::T_CLOSE_PARENTHESIS;
+            
+            case '{' :
+               return self::T_OPEN_CURLY_BRACES;
+            
+            case '}' :
+               return self::T_CLOSE_CURLY_BRACES;
+            
+            case '=' :
+               return self::T_EQUALS;
+            
+            case '\\' :
+               return self::T_NAMESPACE_SEPARATOR;
+            
+            case 'true' :
+               return self::T_TRUE;
+            
+            case 'false' :
+               return self::T_FALSE;
+            
+            case 'null' :
+               return self::T_NULL;
+            
+            case ':' :
+               return self::T_COLON;
+            
+            default :
+               if (ctype_alpha($value[0]) || $value[0] === '_') {
+                  return self::T_IDENTIFIER;
+               }
+               
+               break;
+         }
+      }
+      
+      return $type;
+   }
 
-        return $type;
-    }
 }
